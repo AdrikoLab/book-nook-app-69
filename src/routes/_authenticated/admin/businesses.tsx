@@ -25,10 +25,29 @@ export const Route = createFileRoute("/_authenticated/admin/businesses")({
   component: Businesses,
 });
 
-const filters: { key: "all" | SubState; label: string }[] = [
+type Filter = "all" | SubState | "locking_soon" | "locked";
+
+const LOCK_SOON_DAYS = 3;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** The date a business locks: trial end for trials, paid-period end for active subs. */
+function lockDate(r: { sub: { status: string; trial_ends_at: string | null; current_period_end: string } | null }): Date | null {
+  if (!r.sub) return null;
+  if (r.sub.status === "trialing") return r.sub.trial_ends_at ? new Date(r.sub.trial_ends_at) : null;
+  if (r.sub.status === "active") return new Date(r.sub.current_period_end);
+  return null;
+}
+
+function daysUntil(d: Date): number {
+  return Math.ceil((d.getTime() - Date.now()) / DAY_MS);
+}
+
+const filters: { key: Filter; label: string }[] = [
   { key: "all", label: "All" },
   { key: "subscribed", label: "Subscribed" },
   { key: "trial", label: "On trial" },
+  { key: "locking_soon", label: "Locking soon" },
+  { key: "locked", label: "Locked" },
   { key: "unsubscribed", label: "Not subscribed" },
 ];
 

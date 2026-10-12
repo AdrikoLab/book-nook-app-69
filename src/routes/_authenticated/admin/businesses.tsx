@@ -54,7 +54,7 @@ const filters: { key: Filter; label: string }[] = [
 function Businesses() {
   const { data } = useAdminData();
   const queryClient = useQueryClient();
-  const [filter, setFilter] = useState<"all" | SubState>("all");
+  const [filter, setFilter] = useState<Filter>("all");
   const [q, setQ] = useState("");
 
   const suspend = useMutation({

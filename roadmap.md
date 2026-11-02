@@ -1,5 +1,8 @@
 # BookFlow roadmap
 
+- [~] Complete security audit and hardening: discovery scans started; review verified access, auth, financial, upload, integration and dependency risks; remediate and test without changing design or deleting data
+- [ ] Produce final security report with verified fixes, test results, manual actions and remaining risks
+
 - [~] (wording done; service questions, dashboards, plan controls pending) Audit and implement industry-aware configuration, service questions, staff terminology, booking workflows, dashboard widgets, and admin/plan controls
 - [ ] Verify salon, barbershop, photography, clinic, and consulting experiences and tenant/feature permissions
 

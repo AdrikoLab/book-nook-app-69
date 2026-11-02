@@ -1,3 +1,4 @@
+import { industryFor } from "@/lib/industries";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -241,7 +242,7 @@ function BookingPage() {
         {serviceId ? (
           <section className="rounded-lg border border-border bg-card p-5 sm:p-6">
             <p className="text-xs font-semibold uppercase text-primary">Step 2</p>
-            <h2 className="mt-1 font-display text-lg font-semibold">Choose your stylist or barber</h2>
+            <h2 className="mt-1 font-display text-lg font-semibold">{industryFor(business.category).chooseStaffTitle}</h2>
             <p className="mt-1 text-sm text-muted-foreground">Pick who you'd like to see, or let us match you with whoever is free first.</p>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               <button
@@ -290,7 +291,7 @@ function BookingPage() {
                   )}
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-medium">{member.name}</span>
-                    <span className="block truncate text-xs text-muted-foreground">{member.role ?? "Team member"}</span>
+                    <span className="block truncate text-xs text-muted-foreground">{member.role ?? industryFor(business.category).staffSingular}</span>
                   </span>
                 </button>
               ))}

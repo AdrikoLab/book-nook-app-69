@@ -1,3 +1,4 @@
+import { industryFor } from "@/lib/industries";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -143,7 +144,7 @@ function StaffPage() {
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="role">Job title</Label>
-                <Input id="role" name="role" placeholder="Stylist, therapist, consultant…" />
+                <Input id="role" name="role" placeholder={industryFor(business?.category).staffRoleHint} />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
@@ -184,7 +185,7 @@ function StaffPage() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{member.name}</p>
                     <p className="truncate text-xs text-muted-foreground">
-                      {member.role ?? "Team member"}
+                      {member.role ?? industryFor(business?.category).staffSingular}
                       {member.phone ? ` · ${member.phone}` : ""}
                     </p>
                   </div>

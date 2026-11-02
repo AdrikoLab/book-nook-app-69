@@ -10,3 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Business branding files live in the private `business-branding` bucket under `<business-id>/`; public booking reads use short-lived signed URLs so tenant uploads remain write-protected.
+- Validate private branding references through the shared business-scoped resolver before signing; privileged storage signing bypasses tenant RLS.
+- Notification diagnostics must not log recipients, message bodies, or raw provider responses, to avoid leaking customer data and credentials.

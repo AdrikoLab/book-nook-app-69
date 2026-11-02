@@ -1081,6 +1081,7 @@ export type Database = {
         Returns: boolean
       }
       can_manage_business: { Args: { _business_id: string }; Returns: boolean }
+      can_manage_business_files: { Args: { _folder: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

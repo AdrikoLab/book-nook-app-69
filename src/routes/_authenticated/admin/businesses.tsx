@@ -108,9 +108,23 @@ function Businesses() {
   const [planPick, setPlanPick] = useState<Record<string, string>>({});
   const paidPlans = (data?.plans ?? []).filter((p) => Number(p.price_monthly) > 0);
 
-  const rows = (data?.rows ?? []).filter(
-    (r) => (filter === "all" || r.state === filter) && r.name.toLowerCase().includes(q.toLowerCase()),
-  );
+  type Row = NonNullable<typeof data>["rows"][number];
+  const matches = (r: Row, f: Filter) => {
+    if (f === "all") return true;
+    if (f === "locking_soon" || f === "locked") {
+      const d = lockDate(r as never);
+      if (!d) return f === "locked" && r.state === "unsubscribed";
+      const left = daysUntil(d);
+      return f === "locked" ? left <= 0 : left > 0 && left <= LOCK_SOON_DAYS;
+    }
+    return r.state === f;
+  };
+  const rows = (data?.rows ?? [])
+    .filter((r) => matches(r, filter) && r.name.toLowerCase().includes(q.toLowerCase()))
+    .sort((a, b) => {
+      if (filter !== "locking_soon") return 0;
+      return (lockDate(a as never)?.getTime() ?? 0) - (lockDate(b as never)?.getTime() ?? 0);
+    });
 
   return (
     <>

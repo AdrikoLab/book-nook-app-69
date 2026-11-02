@@ -139,7 +139,7 @@ function Businesses() {
               filter === f.key ? "bg-primary text-primary-foreground" : "hover:bg-muted",
             )}
           >
-            {f.label} ({f.key === "all" ? data?.rows.length ?? 0 : (data?.rows ?? []).filter((r) => r.state === f.key).length})
+            {f.label} ({f.key === "all" ? data?.rows.length ?? 0 : (data?.rows ?? []).filter((r) => matches(r, f.key)).length})
           </button>
         ))}
         <Input placeholder="Search businesses…" value={q} onChange={(e) => setQ(e.target.value)} className="ml-auto max-w-xs" />
@@ -170,6 +170,16 @@ function Businesses() {
                 <td className="p-3"><StatusBadge status={r.sub?.status ?? "expired"} /></td>
                 <td className="p-3 text-muted-foreground">
                   {r.sub ? formatDate(r.sub.status === "trialing" && r.sub.trial_ends_at ? r.sub.trial_ends_at : r.sub.current_period_end) : "—"}
+                  {(() => {
+                    const d = lockDate(r as never);
+                    if (!d) return null;
+                    const left = daysUntil(d);
+                    return (
+                      <p className={cn("text-xs font-medium", left <= 0 ? "text-destructive" : left <= LOCK_SOON_DAYS ? "text-warning" : "text-muted-foreground")}>
+                        {left <= 0 ? "Locked" : `Locks in ${left} day${left === 1 ? "" : "s"}`}
+                      </p>
+                    );
+                  })()}
                 </td>
                 <td className="p-3 text-right font-medium">{formatCurrency(r.paid, data?.currency)}</td>
                 <td className="p-3 text-right">

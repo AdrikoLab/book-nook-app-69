@@ -1,7 +1,7 @@
 # BookFlow roadmap
 
-- [~] Complete security audit and hardening: discovery scans started; review verified access, auth, financial, upload, integration and dependency risks; remediate and test without changing design or deleting data
-- [ ] Produce final security report with verified fixes, test results, manual actions and remaining risks
+- [~] Security hardening: dependency patches, tenant authority/trial guards, public child policies, private-branding isolation and redacted notification diagnostics implemented; finish booking validation, transactional unlock, upload validation and authenticated permission tests after deep scan results
+- [~] Interim security report in SECURITY_REVIEW.md; final report awaits deep scan and remaining verification
 
 - [~] (wording done; service questions, dashboards, plan controls pending) Audit and implement industry-aware configuration, service questions, staff terminology, booking workflows, dashboard widgets, and admin/plan controls
 - [ ] Verify salon, barbershop, photography, clinic, and consulting experiences and tenant/feature permissions

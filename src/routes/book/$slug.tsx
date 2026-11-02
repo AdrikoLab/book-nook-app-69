@@ -169,7 +169,7 @@ function BookingPage() {
   }
 
   const brandStyle = business.brand_color
-    ? ({ "--primary": business.brand_color, "--ring": business.brand_color } as React.CSSProperties)
+    ? ({ "--primary": business.brand_color, "--ring": business.brand_color } as import("react").CSSProperties)
     : undefined;
 
   return (

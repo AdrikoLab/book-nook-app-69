@@ -109,7 +109,7 @@ function SettingsPage() {
           email: String(form.get("email") ?? "").trim() || null,
           city: String(form.get("city") ?? "").trim() || null,
           address: String(form.get("address") ?? "").trim() || null,
-          brand_color: /^#[0-9a-fA-F]{6}$/.test(String(form.get("brand_color") ?? "")) ? String(form.get("brand_color")) : null,
+          brand_color: /^#[0-9a-fA-F]{6}$/.test(String(form.get("brand_color") ?? "")) ? String(form.get("brand_color")) : "#1d4ed8",
           cancellation_hours: Number(form.get("cancellation_hours")),
           reschedule_hours: Number(form.get("reschedule_hours")),
           reminder_hours: String(form.get("reminder_hours") ?? "")

@@ -198,7 +198,7 @@ export function PerformancePanel({ businessId, currency }: { businessId: string;
         </div>
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Earnings" value={money(view.revenue)} icon={CircleDollarSign} tone="success" />
         <StatCard label="Average per day" value={money(view.avgPerDay)} icon={TrendingUp} tone="info" />
         <StatCard label="Bookings" value={view.total} icon={CalendarCheck} />

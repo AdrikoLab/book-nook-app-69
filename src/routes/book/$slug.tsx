@@ -216,9 +216,9 @@ function BookingPage() {
         </div>
       </header>
 
-      <main className="mx-auto grid max-w-5xl gap-6 px-4 py-7 sm:px-6 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
-        <div className="space-y-6">
-        <section className="rounded-lg border border-border bg-card p-5 sm:p-6">
+      <main className="mx-auto grid max-w-5xl gap-6 px-4 py-7 sm:px-6 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
+        <div className="min-w-0 space-y-6">
+        <section className="min-w-0 rounded-lg border border-border bg-card p-4 sm:p-6">
           <p className="text-xs font-semibold uppercase text-primary">Step 1</p>
           <h2 className="mt-1 font-display text-lg font-semibold">Choose a service</h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -250,7 +250,7 @@ function BookingPage() {
         </section>
 
         {serviceId ? (
-          <section className="rounded-lg border border-border bg-card p-5 sm:p-6">
+          <section className="min-w-0 rounded-lg border border-border bg-card p-4 sm:p-6">
             <p className="text-xs font-semibold uppercase text-primary">Step 2</p>
             <h2 className="mt-1 font-display text-lg font-semibold">{industryFor(business.category).chooseStaffTitle}</h2>
             <p className="mt-1 text-sm text-muted-foreground">Pick who you'd like to see, or let us match you with whoever is free first.</p>
@@ -311,7 +311,7 @@ function BookingPage() {
         ) : null}
 
         {serviceId ? (
-          <section className="rounded-lg border border-border bg-card p-5 sm:p-6">
+          <section className="min-w-0 rounded-lg border border-border bg-card p-4 sm:p-6">
             <p className="text-xs font-semibold uppercase text-primary">Step 3</p>
             <h2 className="mt-1 font-display text-lg font-semibold">Pick a date and time</h2>
             <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
@@ -366,7 +366,7 @@ function BookingPage() {
         ) : null}
 
         {slot ? (
-          <section className="rounded-lg border border-border bg-card p-5 sm:p-6">
+          <section className="min-w-0 rounded-lg border border-border bg-card p-4 sm:p-6">
             <p className="text-xs font-semibold uppercase text-primary">Step 4</p>
             <h2 className="mt-1 font-display text-lg font-semibold">Your details</h2>
             <form

@@ -109,6 +109,7 @@ function SettingsPage() {
           email: String(form.get("email") ?? "").trim() || null,
           city: String(form.get("city") ?? "").trim() || null,
           address: String(form.get("address") ?? "").trim() || null,
+          brand_color: /^#[0-9a-fA-F]{6}$/.test(String(form.get("brand_color") ?? "")) ? String(form.get("brand_color")) : "#1d4ed8",
           cancellation_hours: Number(form.get("cancellation_hours")),
           reschedule_hours: Number(form.get("reschedule_hours")),
           reminder_hours: String(form.get("reminder_hours") ?? "")
@@ -193,6 +194,13 @@ function SettingsPage() {
             <div className="space-y-1.5">
               <Label htmlFor="address">Address</Label>
               <Input id="address" name="address" defaultValue={business.address ?? ""} />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="brand_color">Booking page color</Label>
+            <div className="flex items-center gap-3">
+              <input id="brand_color" name="brand_color" type="color" defaultValue={business.brand_color ?? "#1d4ed8"} className="h-10 w-16 cursor-pointer rounded-md border border-input bg-background p-1" />
+              <p className="text-xs text-muted-foreground">Used for buttons and highlights on your booking page.</p>
             </div>
           </div>
 

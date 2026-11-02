@@ -30,14 +30,14 @@ function Overview() {
     <>
       <AdminHeading title="Platform overview" description="How BookFlow is doing across every business." />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Monthly recurring revenue" value={formatCurrency(data?.mrr ?? 0, cur)} icon={TrendingUp} tone="info" />
         <StatCard label="Collected this month" value={formatCurrency(data?.thisMonth ?? 0, cur)} icon={Coins} />
         <StatCard label="Total collected" value={formatCurrency(data?.totalCollected ?? 0, cur)} icon={Coins} />
         <StatCard label="Businesses" value={rows.length} icon={Building2} />
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         <StatCard label="Subscribed (paying)" value={count("subscribed")} icon={BadgeCheck} tone="success" />
         <StatCard label="On free trial" value={count("trial")} icon={Clock} tone="warning" />
         <StatCard label="Not subscribed" value={count("unsubscribed")} icon={XCircle} tone="destructive" />

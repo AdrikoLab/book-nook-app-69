@@ -41,7 +41,7 @@ function Subscriptions() {
   return (
     <>
       <AdminHeading title="Subscriptions & revenue" description="Money generated from business subscriptions." />
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         <StatCard label="Monthly recurring revenue" value={formatCurrency(data?.mrr ?? 0, cur)} icon={TrendingUp} tone="info" />
         <StatCard label="Collected this month" value={formatCurrency(data?.thisMonth ?? 0, cur)} icon={Wallet} />
         <StatCard label="Total collected (all time)" value={formatCurrency(data?.totalCollected ?? 0, cur)} icon={Coins} tone="success" />

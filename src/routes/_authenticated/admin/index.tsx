@@ -43,7 +43,7 @@ function Overview() {
         <StatCard label="Not subscribed" value={count("unsubscribed")} icon={XCircle} tone="destructive" />
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
         <StatCard label="Appointments booked" value={data?.appointmentCount ?? 0} icon={CalendarDays} />
         <StatCard label="End customers" value={data?.customerCount ?? 0} icon={Users} />
       </div>

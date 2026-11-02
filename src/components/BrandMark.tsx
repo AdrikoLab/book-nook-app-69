@@ -1,4 +1,5 @@
-import logo from "@/assets/bookflow-logo.png.asset.json";
+import logoSrc from "@/assets/bookflow-logo.webp";
+const logo = { url: logoSrc };
 import { cn } from "@/lib/utils";
 
 export function BrandMark({ className }: { className?: string }) {

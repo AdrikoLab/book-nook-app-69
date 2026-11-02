@@ -70,12 +70,12 @@ function Businesses() {
   });
 
   const unlock = useMutation({
-    mutationFn: async ({ businessId, planId, subId }: { businessId: string; planId: string; subId?: string | undefined }) => {
+    mutationFn: async ({ businessId, planId, subId, months, paid }: { businessId: string; planId: string; subId?: string | undefined; months: number; paid: boolean }) => {
       const plan = data?.plans.find((p) => p.id === planId);
       if (!plan) throw new Error("Pick a plan");
       const start = new Date();
       const end = new Date(start);
-      end.setMonth(end.getMonth() + 1);
+      end.setMonth(end.getMonth() + months);
       const values = {
         plan_id: planId,
         status: "active" as const,
@@ -87,10 +87,11 @@ function Businesses() {
         ? await supabase.from("subscriptions").update(values).eq("id", subId).select("id").single()
         : await supabase.from("subscriptions").insert({ ...values, business_id: businessId }).select("id").single();
       if (res.error) throw res.error;
+      if (!paid) return { months, paid };
       const pay = await supabase.from("payments").insert({
         business_id: businessId,
         subscription_id: res.data.id,
-        amount: plan.price_monthly,
+        amount: Number(plan.price_monthly) * months,
         currency: plan.currency,
         provider: "manual",
         method: "Recorded by admin",
@@ -98,14 +99,16 @@ function Businesses() {
         paid_at: start.toISOString(),
       });
       if (pay.error) throw pay.error;
+      return { months, paid };
     },
-    onSuccess: () => {
-      toast.success("Account unlocked for 1 month.");
+    onSuccess: (r) => {
+      toast.success(`Account unlocked for ${r.months} month${r.months === 1 ? "" : "s"}${r.paid ? " and payment recorded" : ""}.`);
       void queryClient.invalidateQueries({ queryKey: ["admin-data"] });
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Could not unlock."),
   });
   const [planPick, setPlanPick] = useState<Record<string, string>>({});
+  const [monthPick, setMonthPick] = useState<Record<string, number>>({});
   const paidPlans = (data?.plans ?? []).filter((p) => Number(p.price_monthly) > 0);
 
   type Row = NonNullable<typeof data>["rows"][number];
@@ -192,16 +195,28 @@ function Businesses() {
                     >
                       {paidPlans.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                     </select>
-                    <Button
-                      size="sm"
-                      disabled={unlock.isPending}
-                      onClick={() => {
-                        const planId = planPick[r.id] ?? (r.plan && Number(r.plan.price_monthly) > 0 ? r.plan.id : paidPlans[0]?.id);
-                        if (planId) unlock.mutate({ businessId: r.id, planId, subId: r.sub?.id });
-                      }}
+                    <select
+                      aria-label="Unlock for"
+                      className="rounded-md border border-input bg-background px-2 py-1 text-xs"
+                      value={monthPick[r.id] ?? 1}
+                      onChange={(e) => setMonthPick({ ...monthPick, [r.id]: Number(e.target.value) })}
                     >
-                      Mark paid &amp; unlock
-                    </Button>
+                      {[1, 3, 6, 12].map((m) => <option key={m} value={m}>{m} mo</option>)}
+                    </select>
+                    {([true, false] as const).map((paid) => (
+                      <Button
+                        key={String(paid)}
+                        size="sm"
+                        variant={paid ? "default" : "outline"}
+                        disabled={unlock.isPending}
+                        onClick={() => {
+                          const planId = planPick[r.id] ?? (r.plan && Number(r.plan.price_monthly) > 0 ? r.plan.id : paidPlans[0]?.id);
+                          if (planId) unlock.mutate({ businessId: r.id, planId, subId: r.sub?.id, months: monthPick[r.id] ?? 1, paid });
+                        }}
+                      >
+                        {paid ? "Mark paid & unlock" : "Unlock free"}
+                      </Button>
+                    ))}
                   <Button
                     size="sm"
                     variant={r.is_suspended ? "outline" : "ghost"}

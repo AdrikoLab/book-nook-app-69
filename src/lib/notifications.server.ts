@@ -45,7 +45,7 @@ class LoggingProvider implements NotificationProvider {
   ) {}
 
   async send(message: NotificationMessage): Promise<SendResult> {
-    console.info(`[notifications:${this.channel}] -> ${message.recipient}: ${message.body}`);
+    console.info(`[notifications:${this.channel}] delivery skipped; provider unavailable`);
     return { provider: this.name, status: "skipped", error: "No delivery provider connected yet" };
   }
 }
@@ -115,9 +115,8 @@ class KlaviyoProvider implements NotificationProvider {
       }),
     });
     if (!res.ok) {
-      const text = await res.text();
-      console.error(`Klaviyo send failed [${res.status}]: ${text}`);
-      return { provider: this.name, status: "failed", error: `[${res.status}] ${text.slice(0, 300)}` };
+      console.error(`Klaviyo send failed [${res.status}]`);
+      return { provider: this.name, status: "failed", error: `Delivery provider rejected the request (${res.status})` };
     }
     return { provider: this.name, status: "sent" };
   }
@@ -146,11 +145,11 @@ export async function sendNotification(message: NotificationMessage): Promise<Se
   } else {
     try {
       result = await provider.send(message);
-    } catch (error) {
+    } catch {
       result = {
         provider: provider.name,
         status: "failed",
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: "Delivery provider unavailable",
       };
     }
   }

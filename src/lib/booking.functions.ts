@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { generateSlots, hasConflict } from "@/lib/booking";
 import type { BusyInterval, WorkingHour } from "@/lib/booking";
+import { brandingReference } from "@/lib/branding";
 
 const availabilitySchema = z.object({
   slug: z.string().min(1).max(120),
@@ -304,8 +305,9 @@ export const getBookingPage = createServerFn({ method: "POST" })
     ]);
 
     const resolveBrandingUrl = async (value: string | null) => {
-      if (!value || /^https?:\/\//.test(value)) return value;
-      const { data: signed } = await supabaseAdmin.storage.from("business-branding").createSignedUrl(value, 3600);
+      const reference = brandingReference(value, business.id);
+      if (!reference || reference.startsWith("https://")) return reference;
+      const { data: signed } = await supabaseAdmin.storage.from("business-branding").createSignedUrl(reference, 3600);
       return signed?.signedUrl ?? null;
     };
 

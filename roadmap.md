@@ -1,6 +1,6 @@
 # BookFlow roadmap
 
-- [ ] Audit and implement industry-aware configuration, service questions, staff terminology, booking workflows, dashboard widgets, and admin/plan controls
+- [~] (wording done; service questions, dashboards, plan controls pending) Audit and implement industry-aware configuration, service questions, staff terminology, booking workflows, dashboard widgets, and admin/plan controls
 - [ ] Verify salon, barbershop, photography, clinic, and consulting experiences and tenant/feature permissions
 
 - [x] Multi-tenant schema, RLS, demo data
@@ -20,3 +20,4 @@
 - [x] Downloadable PDF booking receipt
 - [x] Navigation shows the logo without the BookFlow wordmark
 - [ ] Connect a real SMS/email sender so booking confirmations and reminders are delivered (needs sender domain / SMS account)
+- [x] Admin filters for accounts locking soon / locked

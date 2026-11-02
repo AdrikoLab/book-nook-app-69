@@ -1,3 +1,4 @@
+import { INDUSTRY_CATEGORIES } from "@/lib/industries";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -30,16 +31,7 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
   component: OnboardingPage,
 });
 
-const categories = [
-  "Salon & Spa",
-  "Barbershop",
-  "Clinic & Health",
-  "Photography",
-  "Consulting",
-  "Fitness & Wellness",
-  "Repair & Home Services",
-  "Other",
-];
+const categories = INDUSTRY_CATEGORIES;
 
 function slugify(value: string) {
   return value

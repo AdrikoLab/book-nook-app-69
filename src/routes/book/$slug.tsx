@@ -168,40 +168,50 @@ function BookingPage() {
     );
   }
 
+  const brandStyle = business.brand_color
+    ? ({ "--primary": business.brand_color, "--ring": business.brand_color } as React.CSSProperties)
+    : undefined;
+
   return (
-    <div className="min-h-screen bg-secondary/30 pb-16">
-      <header className="relative overflow-hidden border-b border-border bg-card">
-        {business.cover_url ? (
-          <img src={business.cover_url} alt="" className="absolute inset-0 size-full object-cover opacity-20" />
-        ) : null}
-        <div className="absolute inset-0 bg-background/70" />
-        <div className="relative mx-auto flex max-w-5xl items-center gap-4 px-4 py-8 sm:px-6 sm:py-10">
-          {business.logo_url ? (
-            <img src={business.logo_url} alt={`${business.name} logo`} className="size-16 rounded-lg border border-border bg-card object-contain p-1.5 shadow-sm sm:size-20" />
+    <div className="min-h-screen bg-secondary/30 pb-16" style={brandStyle}>
+      <header className="relative">
+        <div className="relative h-44 overflow-hidden bg-primary sm:h-60">
+          {business.cover_url ? (
+            <img src={business.cover_url} alt={`${business.name} cover`} className="absolute inset-0 size-full object-cover" />
           ) : (
-            <span className="grid size-16 place-items-center rounded-lg bg-primary text-xl font-bold text-primary-foreground sm:size-20">
-              {business.name.slice(0, 2).toUpperCase()}
-            </span>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/60" />
           )}
-          <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase text-primary">Online booking</p>
-          <h1 className="mt-1 font-display text-2xl font-bold sm:text-3xl">{business.name}</h1>
-          {business.description ? (
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground">{business.description}</p>
-          ) : null}
-          <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
-            {business.city ? (
-              <span className="inline-flex items-center gap-1">
-                <MapPin className="size-3.5" /> {business.city}
-                {business.country ? `, ${business.country}` : ""}
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent" />
+        </div>
+        <div className="relative mx-auto -mt-14 max-w-5xl px-4 sm:-mt-16 sm:px-6">
+          <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-lg sm:flex-row sm:items-end sm:p-6">
+            {business.logo_url ? (
+              <img src={business.logo_url} alt={`${business.name} logo`} className="-mt-14 size-24 shrink-0 rounded-2xl border-4 border-card bg-card object-contain p-1.5 shadow-md sm:-mt-16 sm:size-28" />
+            ) : (
+              <span className="-mt-14 grid size-24 shrink-0 place-items-center rounded-2xl border-4 border-card bg-primary text-2xl font-bold text-primary-foreground shadow-md sm:-mt-16 sm:size-28">
+                {business.name.slice(0, 2).toUpperCase()}
               </span>
-            ) : null}
-            {business.phone ? (
-              <span className="inline-flex items-center gap-1">
-                <Phone className="size-3.5" /> {business.phone}
-              </span>
-            ) : null}
-          </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Book online</p>
+              <h1 className="mt-1 break-words font-display text-2xl font-bold sm:text-3xl">{business.name}</h1>
+              {business.description ? (
+                <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{business.description}</p>
+              ) : null}
+              <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                {business.city ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1">
+                    <MapPin className="size-3.5" /> {business.city}
+                    {business.country ? `, ${business.country}` : ""}
+                  </span>
+                ) : null}
+                {business.phone ? (
+                  <a href={`tel:${business.phone}`} className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1 hover:text-foreground">
+                    <Phone className="size-3.5" /> {business.phone}
+                  </a>
+                ) : null}
+              </div>
+            </div>
           </div>
         </div>
       </header>

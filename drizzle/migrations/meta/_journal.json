@@ -29,6 +29,13 @@
       "when": 1793644163871,
       "tag": "0003_protect_tenant_authority_and_trials",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793781684525,
+      "tag": "0004_migration",
+      "breakpoints": true
     }
   ]
 }

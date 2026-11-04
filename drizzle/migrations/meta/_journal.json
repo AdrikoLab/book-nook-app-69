@@ -43,6 +43,13 @@
       "when": 1793784117772,
       "tag": "0005_fix_public_branding_policy",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793784282821,
+      "tag": "0006_booking_page_service_images",
+      "breakpoints": true
     }
   ]
 }

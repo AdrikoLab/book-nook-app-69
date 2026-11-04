@@ -180,7 +180,7 @@ export const getBookingPage = createServerFn({ method: "POST" })
     if (!page) return null;
     const p = page as {
       business: PageBusiness;
-      services: { id: string; name: string; description: string | null; category: string | null; price: number; duration_minutes: number; location_id: string | null }[];
+      services: { id: string; name: string; description: string | null; category: string | null; price: number; duration_minutes: number; location_id: string | null; image_url: string | null }[];
       staff: { id: string; name: string; role: string | null; photo_url: string | null; bio: string | null }[];
       staffServices: { staff_id: string; service_id: string }[];
       locations: { id: string; name: string; address: string | null; city: string | null }[];
@@ -193,10 +193,12 @@ export const getBookingPage = createServerFn({ method: "POST" })
       const { data: signed } = await sb.storage.from("business-branding").createSignedUrl(reference, 3600);
       return signed?.signedUrl ?? null;
     };
-    const [logoUrl, coverUrl] = await Promise.all([
+    const [logoUrl, coverUrl, ...serviceImages] = await Promise.all([
       resolveBrandingUrl(business.logo_url),
       resolveBrandingUrl(business.cover_url),
+      ...p.services.map((s) => resolveBrandingUrl(s.image_url ?? null)),
     ]);
+    const services = p.services.map((s, i) => ({ ...s, image_url: serviceImages[i] ?? null }));
 
-    return { ...p, business: { ...business, logo_url: logoUrl, cover_url: coverUrl } };
+    return { ...p, services, business: { ...business, logo_url: logoUrl, cover_url: coverUrl } };
   });

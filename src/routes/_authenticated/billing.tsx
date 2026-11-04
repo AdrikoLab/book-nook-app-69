@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useBusiness, useSubscription } from "@/hooks/useBusiness";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { CurrencySelect, useDisplayCurrency } from "@/lib/currency";
-import { whatsappLink } from "@/lib/contact";
+import { PAYMENT_NAME, PAYMENT_NUMBER, renewalMessage, whatsappLink } from "@/lib/contact";
 
 export const Route = createFileRoute("/_authenticated/billing")({
   head: () => ({
@@ -78,7 +78,7 @@ function BillingPage() {
         <h2 className="font-display text-lg font-semibold">Available plans</h2>
         <CurrencySelect value={money.currency} onChange={money.setCurrency} />
       </div>
-      <p className="mt-2 text-sm text-muted-foreground">Pay for a plan by WhatsApp and we unlock your account as soon as payment is received.</p>
+      <p className="mt-2 text-sm text-muted-foreground">Send payment to {PAYMENT_NUMBER} (Name: {PAYMENT_NAME}), then message us on WhatsApp. Your account is reactivated as soon as payment is received.</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {plans.data?.map((plan) => {
           const current = subscription?.plan_id === plan.id;
@@ -108,7 +108,7 @@ function BillingPage() {
               ) : Number(plan.price_monthly) === 0 ? null : (
                 <Button asChild className="mt-4">
                   <a
-                    href={whatsappLink(`Hi, I'd like to pay for the ${plan.name} plan (${money.format(plan.price_monthly, plan.currency)}/month) for ${business?.name ?? "my business"}.`)}
+                    href={whatsappLink(renewalMessage({ businessName: business?.name, businessId: business?.id, planName: plan.name, price: money.format(plan.price_monthly, plan.currency) }))}
                     target="_blank"
                     rel="noreferrer"
                   >

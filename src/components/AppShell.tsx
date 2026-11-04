@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { BrandMark } from "@/components/BrandMark";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Lock } from "lucide-react";
-import { whatsappLink } from "@/lib/contact";
+import { PAYMENT_NAME, PAYMENT_NUMBER, renewalMessage, whatsappLink } from "@/lib/contact";
 import {
   CalendarDays,
   ChartLine,
@@ -194,10 +194,15 @@ export function AppShell({
               <p className="mt-2 text-sm text-muted-foreground">
                 Your 7-day free trial has ended. Choose a plan and pay, and we'll unlock your account straight away.
               </p>
+              <div className="mt-4 rounded-lg border border-border bg-muted/50 p-3 text-sm">
+                <p className="font-medium">Send payment to {PAYMENT_NUMBER}</p>
+                <p className="text-muted-foreground">Name: {PAYMENT_NAME}</p>
+                <p className="mt-1 text-xs text-muted-foreground">Your account is reactivated as soon as payment is received.</p>
+              </div>
               <div className="mt-5 flex flex-wrap justify-center gap-2">
                 <Button asChild><Link to="/billing">See plans</Link></Button>
                 <Button asChild variant="outline">
-                  <a href={whatsappLink(`Hi, I'd like to unlock ${business?.name ?? "my business"} on BookFlow.`)} target="_blank" rel="noreferrer">
+                  <a href={whatsappLink(renewalMessage({ businessName: business?.name, businessId: business?.id }))} target="_blank" rel="noreferrer">
                     WhatsApp us
                   </a>
                 </Button>

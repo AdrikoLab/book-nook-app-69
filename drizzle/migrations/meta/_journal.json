@@ -36,6 +36,13 @@
       "when": 1793781684525,
       "tag": "0004_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793784117772,
+      "tag": "0005_fix_public_branding_policy",
+      "breakpoints": true
     }
   ]
 }

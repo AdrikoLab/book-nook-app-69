@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Scissors } from "lucide-react";
+import { ImagePlus, Scissors } from "lucide-react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
@@ -47,9 +47,52 @@ function ServicesPage() {
     },
   });
 
+  const uploadImage = async (file: File) => {
+    if (!file.type.startsWith("image/")) throw new Error("Please choose an image file.");
+    if (file.size > 5 * 1024 * 1024) throw new Error("Image must be under 5 MB.");
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const path = `${business!.id}/service-${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("business-branding").upload(path, file, { contentType: file.type });
+    if (error) throw error;
+    return path;
+  };
+
+  const images = useQuery({
+    queryKey: ["service-images", services.data?.map((s) => s.image_url).join("|")],
+    enabled: Boolean(services.data?.length),
+    queryFn: async () => {
+      const out: Record<string, string> = {};
+      await Promise.all(
+        (services.data ?? []).map(async (s) => {
+          if (!s.image_url) return;
+          if (s.image_url.startsWith("https://")) { out[s.id] = s.image_url; return; }
+          const { data } = await supabase.storage.from("business-branding").createSignedUrl(s.image_url, 3600);
+          if (data?.signedUrl) out[s.id] = data.signedUrl;
+        }),
+      );
+      return out;
+    },
+  });
+
+  const setImage = useMutation({
+    mutationFn: async ({ id, file }: { id: string; file: File }) => {
+      const path = await uploadImage(file);
+      const { error } = await supabase.from("services").update({ image_url: path }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Image updated.");
+      void queryClient.invalidateQueries({ queryKey: ["services"] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not upload that image."),
+  });
+
   const create = useMutation({
     mutationFn: async (form: FormData) => {
+      const file = form.get("image");
+      const image_url = file instanceof File && file.size > 0 ? await uploadImage(file) : null;
       const { error } = await supabase.from("services").insert({
+        image_url,
         business_id: business!.id,
         name: String(form.get("name")).trim(),
         description: String(form.get("description") ?? "").trim() || null,
@@ -64,7 +107,7 @@ function ServicesPage() {
       setOpen(false);
       void queryClient.invalidateQueries({ queryKey: ["services"] });
     },
-    onError: () => toast.error("Could not save that service."),
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not save that service."),
   });
 
   const toggle = useMutation({
@@ -104,6 +147,10 @@ function ServicesPage() {
                 <Label htmlFor="description">Description</Label>
                 <Textarea id="description" name="description" rows={2} />
               </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="image">Image</Label>
+                <Input id="image" name="image" type="file" accept="image/*" />
+              </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="space-y-1.5">
                   <Label htmlFor="price">Price</Label>
@@ -135,7 +182,26 @@ function ServicesPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {services.data?.map((service) => (
-            <div key={service.id} className="surface-panel p-4">
+            <div key={service.id} className="surface-panel overflow-hidden p-4">
+              <label className="-mx-4 -mt-4 mb-3 block cursor-pointer bg-muted" title="Change image">
+                {images.data?.[service.id] ? (
+                  <img src={images.data[service.id]} alt={service.name} className="aspect-[16/9] w-full object-cover" />
+                ) : (
+                  <div className="flex aspect-[16/9] w-full items-center justify-center text-sm text-muted-foreground">
+                    <ImagePlus className="mr-2 size-4" /> Add image
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) setImage.mutate({ id: service.id, file });
+                    e.target.value = "";
+                  }}
+                />
+              </label>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="truncate font-medium">{service.name}</p>

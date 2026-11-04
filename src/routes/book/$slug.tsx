@@ -232,10 +232,13 @@ function BookingPage() {
                   setSlot(null);
                 }}
                 className={cn(
-                  "rounded-lg border border-border p-4 text-left transition-colors hover:border-primary",
+                  "overflow-hidden rounded-lg border border-border p-4 text-left transition-colors hover:border-primary",
                   serviceId === s.id && "border-primary bg-primary/5",
                 )}
               >
+                {s.image_url ? (
+                  <img src={s.image_url} alt={s.name} loading="lazy" className="-mx-4 -mt-4 mb-3 aspect-[16/9] w-[calc(100%+2rem)] max-w-none object-cover" />
+                ) : null}
                 <p className="font-medium">{s.name}</p>
                 {s.description ? (
                   <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{s.description}</p>

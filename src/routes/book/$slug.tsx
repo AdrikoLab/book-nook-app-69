@@ -184,7 +184,7 @@ function BookingPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/50 to-foreground/80" />
         <div className="relative w-full max-w-md animate-in fade-in zoom-in-95 duration-500 rounded-2xl border border-border bg-card p-7 text-center shadow-elevated sm:p-9">
           {business.logo_url ? (
-            <div className="mx-auto flex h-24 max-w-full items-center justify-center sm:h-28">
+            <div className="mx-auto flex h-36 max-w-full items-center justify-center sm:h-44">
               <img src={business.logo_url} alt={`${business.name} logo`} className="h-full w-auto max-w-full rounded-2xl object-contain" />
             </div>
           ) : (
@@ -235,7 +235,7 @@ function BookingPage() {
         <div className="relative mx-auto -mt-14 max-w-5xl px-4 sm:-mt-16 sm:px-6">
           <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-lg sm:flex-row sm:items-end sm:p-6">
             {business.logo_url ? (
-              <div className="-mt-14 flex h-24 shrink-0 items-center sm:-mt-16 sm:h-28">
+              <div className="-mt-14 flex h-28 shrink-0 items-center sm:-mt-16 sm:h-32">
                 <img src={business.logo_url} alt={`${business.name} logo`} className="h-full w-auto max-w-[55vw] rounded-2xl object-contain shadow-md sm:max-w-[280px]" />
               </div>
             ) : (

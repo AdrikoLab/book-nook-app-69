@@ -191,7 +191,7 @@ function BookingPage() {
             </span>
           )}
           <p className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
-            <Sparkles className="size-3.5" /> Karibu · Welcome
+            <Sparkles className="size-3.5" /> Welcome
           </p>
           <h1 className="mt-2 font-display text-2xl font-semibold leading-tight sm:text-3xl">
             Welcome to {business.name}

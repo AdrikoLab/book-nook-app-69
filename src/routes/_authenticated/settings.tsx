@@ -249,9 +249,9 @@ function SettingsPage() {
             <div className="mt-5 grid gap-4 sm:grid-cols-[9rem_1fr]">
               <div>
                 <p className="mb-2 text-sm font-medium">Logo</p>
-                <div className="grid aspect-square place-items-center overflow-hidden rounded-lg border border-dashed border-border bg-secondary">
+                <div className="flex h-36 items-center justify-center overflow-hidden rounded-lg border border-dashed border-border bg-secondary px-3">
                   {branding.data?.logo ? (
-                    <img src={branding.data.logo} alt="Business logo preview" className="size-full object-contain p-3" />
+                    <img src={branding.data.logo} alt="Business logo preview" className="h-full w-auto max-w-full object-contain" />
                   ) : (
                     <ImagePlus className="size-7 text-muted-foreground" />
                   )}

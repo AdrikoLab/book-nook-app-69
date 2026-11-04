@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
-import { CalendarDays, CheckCircle2, Clock, Download, MapPin, Phone, UserRound } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, Sparkles, Clock, Download, MapPin, Phone, UserRound } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -58,6 +58,7 @@ function BookingPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
+  const [welcomed, setWelcomed] = useState(false);
   const [confirmed, setConfirmed] = useState<BookingReceipt | null>(null);
 
   const page = useQuery({
@@ -171,6 +172,52 @@ function BookingPage() {
   const brandStyle = business.brand_color
     ? ({ "--primary": business.brand_color, "--ring": business.brand_color } as import("react").CSSProperties)
     : undefined;
+
+  if (!welcomed) {
+    const industry = industryFor(business.category);
+    const highlights = page.data.services.slice(0, 3).map((s) => s.name);
+    return (
+      <div className="relative grid min-h-screen place-items-center overflow-hidden bg-primary px-4 py-12" style={brandStyle}>
+        {business.cover_url ? (
+          <img src={business.cover_url} alt="" className="absolute inset-0 size-full object-cover opacity-40" />
+        ) : null}
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/50 to-foreground/80" />
+        <div className="relative w-full max-w-md animate-in fade-in zoom-in-95 duration-500 rounded-2xl border border-border bg-card p-7 text-center shadow-elevated sm:p-9">
+          {business.logo_url ? (
+            <img src={business.logo_url} alt={`${business.name} logo`} className="mx-auto size-20 rounded-2xl border border-border bg-card object-contain p-1.5" />
+          ) : (
+            <span className="mx-auto grid size-20 place-items-center rounded-2xl bg-primary/10 font-display text-2xl font-semibold text-primary">
+              {business.name.slice(0, 2).toUpperCase()}
+            </span>
+          )}
+          <p className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
+            <Sparkles className="size-3.5" /> Karibu · Welcome
+          </p>
+          <h1 className="mt-2 font-display text-2xl font-semibold leading-tight sm:text-3xl">
+            Welcome to {business.name}
+          </h1>
+          <p className="mt-1 text-sm font-medium text-muted-foreground">Online booking page</p>
+          <p className="mt-4 text-sm text-muted-foreground">{business.description || industry.welcomeLine}</p>
+          {highlights.length > 0 ? (
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              {highlights.map((h) => (
+                <span key={h} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium">{h}</span>
+              ))}
+              {page.data.services.length > 3 ? (
+                <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium">+{page.data.services.length - 3} more</span>
+              ) : null}
+            </div>
+          ) : null}
+          <Button size="lg" className="mt-7 w-full" onClick={() => setWelcomed(true)}>
+            Book your appointment <ArrowRight className="size-4" />
+          </Button>
+          {business.city ? (
+            <p className="mt-4 inline-flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="size-3.5" /> {business.city}</p>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-secondary/30 pb-16" style={brandStyle}>

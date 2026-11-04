@@ -1090,6 +1090,43 @@ export type Database = {
         Returns: boolean
       }
       is_business_member: { Args: { _business_id: string }; Returns: boolean }
+      public_booking_context: {
+        Args: {
+          _date: string
+          _from: string
+          _service_id: string
+          _slug: string
+          _staff_id: string
+          _to: string
+        }
+        Returns: Json
+      }
+      public_booking_page: { Args: { _slug: string }; Returns: Json }
+      public_create_booking: {
+        Args: {
+          _email: string
+          _name: string
+          _notes: string
+          _phone: string
+          _service_id: string
+          _slug: string
+          _staff_id: string
+          _starts_at: string
+        }
+        Returns: Json
+      }
+      public_join_waitlist: {
+        Args: {
+          _date: string
+          _email: string
+          _name: string
+          _notes: string
+          _phone: string
+          _service_id: string
+          _slug: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "super_admin" | "owner" | "manager" | "staff" | "customer"
